@@ -8,7 +8,13 @@
  long t_A, t_B, t_B_old=0, cur_t; //time variables
  int r = 0.04; //m
  int way = -1;
+ int reps = 0;
+ int oldway = 0;
+ long reptime = 0, reptime2 =0;
+  int sets = 0;
+ 
  void setup()
+ 
  {
    Serial.begin(9600);
    pinMode(A0, INPUT);
@@ -29,7 +35,11 @@
      cur_t = micros();
      //Serial.println(cur_t);
      //Serial.println(1000000 * 60 / (cur_t - t)); //print the rpm
-     Serial.println(way*1000000 * 2 * 3.14 * 0.04 / (cur_t - t_A)); //print the rpm
+     Serial.print(way*1000000 * 2 * 3.14 * 0.04 / (cur_t - t_A));//print the rpm
+    Serial.print("\t");
+    Serial.print(reps);
+    Serial.print("\t");
+    Serial.println(sets);
      t_A = micros();
    }
    prev_val_A = val_A;
@@ -51,18 +61,35 @@
       {
         //Serial.println("Clockwise");
         way = 1;
+        
       }
       else 
       {
         way = -1;
+     
       }
-      
+    
       t_B_old = t_B;
  }
    prev_val_B = val_B;
 
+      //figure out if rep has been completed based on direction change. 
+       if(way ==-1 && oldway==1){
+        reptime = millis(); // time stamp the rep
+        reps = reps +1;
+        
+       }
+       oldway = way;
+      
+      if ((millis() - reptime) >= 10000 && reps>0){// need to compare time between reps to see if its a new set
+      reps = 0;
+      sets = sets +1;
+      }
+
+
+    
+      }
+
+
     //}
 
-   
-   
- }
