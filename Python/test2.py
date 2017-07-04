@@ -3,6 +3,7 @@ import serial
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import MySQLdb
 
 arduino = serial.Serial('COM5', 9600, timeout=.1)
 
@@ -12,14 +13,16 @@ prev_B = 0
 t_A = -0.0001
 t_B = -0.0001
 t_B_old = -0.0001
-radius = 0.04 # m
-way = 0;
-reps = 0;
-oldway = 0;
-reptime = 0
+radius = 0.04
+rep_list = []
+way = 0
+reps = 0
+oldway = 0
+reptime = time.time()
 sets = 0
 A = 0
 B = 0
+leave = 0
 
 def arduino_pin(letter, data_in):
     if letter in data_in:
@@ -31,7 +34,7 @@ def rising_edge(prev, pres):
     cur_t = time.clock()
     return cur_t
 
-while True:
+while leave == 0:
     data = arduino.readline()[:-2] #the last bit gets rid of the new-line chars
     if data:
 
@@ -72,6 +75,47 @@ while True:
             print reps
         oldway = way
 
-        if (time.time() - reptime) >= 20 and reps > 0:
+        if (time.time() - reptime) >= 4 and reps > 0:
+            rep_list.extend([reps])
             reps = 0
             sets = sets + 1
+        if (time.time() - reptime) >= 10:
+            print "done"
+            leave = 1
+
+db = MySQLdb.connect(host="sql9.freemysqlhosting.net",  # your host, usually localhost
+                     user="sql9182609",  # your username
+                     passwd="AN2ffn1RAh",  # your password
+                     db="sql9182609")  # name of the data base
+
+# you must create a Cursor object. It will let
+# you execute all the queries you need
+cur = db.cursor()
+
+# ___INSERT DATA TO LOG TABLE___
+# Variables to go in table
+exercise = "Exercise Name"  # Name [string] (Max 20 Char)
+sets = sets  # N number of sets
+reps = rep_list  # List of length N [int]
+weights = [20, 20, 2, 20]  # List of length N [int]
+avg_vel = [0.67, 0.56, 0.45, 0.41]  # List of length N [float]
+rfid = "0012349093"  # 10 digit code [string]
+
+insert_query = "INSERT INTO log (exercise, sets, reps, weights, avg_vel, rfid, date_added)\
+            VALUES (\'" + exercise + "\'," + str(sets) + ",\'" + str(reps) + "\',\'" + \
+               str(weights) + "\',\'" + str(avg_vel) + "\',\'" + str(rfid) + "\',NOW())"
+print insert_query
+try:
+    cur.execute(insert_query)
+    db.commit()
+except:
+    db.rollback()
+
+# ___PRINT RESULTS___
+cur.execute("SELECT * FROM log")
+
+# print all the first cell of all the rows
+for row in cur.fetchall():
+    print row[1]
+
+db.close()
