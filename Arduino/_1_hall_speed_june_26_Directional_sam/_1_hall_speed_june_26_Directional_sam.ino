@@ -25,12 +25,13 @@
    int sig_A = analogRead(A0); //read raw value of hall sensor A
    int sig_B = analogRead(A1); //read raw value of hall sensor B
    
-   
+  
    
    //HALL EFFECT A
    if (sig_A > refsig) val_A = HIGH; //convert it to digital 0,1 form
    else val_A = LOW;
 
+    Serial.println(val_A);
    if (prev_val_A == 0 && val_A == 1) { //check for rising edge
      cur_t = micros();
      //Serial.println(cur_t);
