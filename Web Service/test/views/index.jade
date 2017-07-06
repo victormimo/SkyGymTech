@@ -3,7 +3,7 @@ extends layout
 block content
 	h1= title
 	p Welcome to #{title} #{number} #{guests}<br>
-		li #{data[1].reps[4]} <br>
+		li #{data[1].reps[0]} <br>
 		li This is more text <br>
 		each item in guests
 			li= item
@@ -19,7 +19,7 @@ block content
 							td= item.entry_id
 							td= item.exercise
 							td= item.sets
-							td #{item.reps[4]} <br> #{item.reps[4]} <br> #{item.reps[3]}
+							td #{item.reps[0]} <br> #{item.reps[1]} <br> #{item.reps[2]} <br> #{item.reps[3]}
 							td= item.weight
 							td= item.entry_RFID
 							td= item.date_added
