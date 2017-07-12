@@ -2,7 +2,9 @@ import serial
 
 weight_old = 5
 A = B = C = D = E = 0
-arduino = serial.Serial('COM5', 9600, timeout=.1)
+arduino = serial.Serial('COM8', 9600, timeout=.1)
+
+print ("1")
 
 def arduino_pin(letter, data_in):
     if letter in data_in:
@@ -28,11 +30,12 @@ def check_weight(A, B, C, D, E):
 while True:
     data = arduino.readline()[:-2] #the last bit gets rid of the new-line chars
     if data:
-        A_input = arduino_pin("C", data)
-        B_input = arduino_pin("D", data)
-        C_input = arduino_pin("E", data)
-        D_input = arduino_pin("F", data)
-        E_input = arduino_pin("G", data)
+        print "3"
+        A_input = arduino_pin("A", data)
+        B_input = arduino_pin("B", data)
+        C_input = arduino_pin("C", data)
+        D_input = arduino_pin("D", data)
+        E_input = arduino_pin("E", data)
         if A_input == 0 or A_input == 1:
             A = A_input
         if B_input == 0 or B_input == 1:
