@@ -12,14 +12,22 @@ block content
 			table
 				thead
 					tr
-						th Entry Logs
+						th Entry ID
+						th Exercie
+						th Reps
+						th Sets
+						th Weight
+						th Average<br>Velocity
+						th RFID
+						th Date
 				tbody
 					each item in data
 						tr 
 							td= item.entry_id
 							td= item.exercise
 							td= item.sets
-							td #{item.reps[0]} <br> #{item.reps[1]} <br> #{item.reps[2]} <br> #{item.reps[3]}
+							td= item.reps
 							td= item.weight
+							td= item.avg_vel
 							td= item.entry_RFID
 							td= item.date_added
