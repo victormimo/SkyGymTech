@@ -6,8 +6,11 @@ var router = express.Router();
 var Product = require('../models/product')
 
 // Routes
-Product.methods(['get','put','post','delete']);
-Product.register(router,'/products')
+//Product.methods(['get','put','post','delete']);
+//Product.register(router,'/products')
 
+router.get('/products',function(req,res){
+	res.send('API is working!')
+})
 // Return router
 module.exports = router;

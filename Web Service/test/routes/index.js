@@ -20,32 +20,21 @@ router.get('/', function(req, res, next) {
     });
 
     /* SELECT DATA */
-    con.query("SELECT * FROM log", function (err, results, fields) {
+    con.query("SELECT *, DATE_FORMAT(date_added, \"%m-%d-%Y\") AS date_mod FROM log;log", function (err, results, fields) {
         if (err) throw err;
             console.log(results);
 
             var names = ["Jim","John","Jack","Jill"];
             /*
             var results = {
-                "_id" : "100003",
-                "userid" : "103",
-                "projectName" : "Nodejs Project",
-                "startDate" : "03/15/2015",
-                "endDate" : "05/15/2015",
-                "tasks" : [ 
-                    {
-                        "taskid" : "5",
-                        "taskDescription" : "Task 5"
-                    }, 
-                    {
-                        "taskid" : "6",
-                        "taskDescription" : "Task 6"
-                    }, 
-                    {
-                        "taskid" : "7",
-                        "taskDescription" : "Task 7"
-                    }
-                ]
+                "entry_id" : "100003",
+                "exercise" : "103",
+                "reps" : "Nodejs Project",
+                "sets" : "03/15/2015",
+                "weight" : "05/15/2015",
+                "avg_vel" : "05/15/2015",
+                "entry_RFID" : "05/15/2015",
+                "date_added" : "05/15/2015",
             };
             */
             var int = 4;
